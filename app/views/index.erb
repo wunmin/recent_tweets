@@ -1,0 +1,48 @@
+<div class="container">
+  <h1>Fetch Tweets</h1>
+  <form action="/followers" method="POST" id="fetch_tweets_form">
+    Username: <input type="text" name="username"></input>
+    <input class="fetch_tweets" type="submit" value="Fetch tweets"></input>
+<!--     <input class="fetch_followers" type="submit" value="Fetch followers"></input> -->
+  </form>
+  <div class="tweets"></div>
+</div>
+
+<script>
+  $(function(){
+    $(".fetch_tweets").on("click", function(event) {
+      event.preventDefault();
+      $(".tweets").empty();
+      $(".fetch_tweets").disabled;
+      $(".fetch_followers").disabled;
+      $(".tweets").append("<img src='/img/ajax-loader.gif'>")
+      $.ajax({
+        type: "POST",
+        url: "/tweets",
+        data: $("#fetch_tweets_form").serialize(),
+      })
+      .done(function(response){
+        $(".tweets").html(response);
+        $(".fetch_button").removeAttr('disabled');
+      });
+    });
+
+    $(".fetch_followers").on("click", function(event) {
+      event.preventDefault();
+      $(".tweets").empty();
+      $(".fetch_tweets").disabled;
+      $(".fetch_followers").disabled;
+      $(".tweets").append("<img src='/img/ajax-loader.gif'>")
+      $.ajax({
+        type: "POST",
+        url: "/followers",
+        data: $("#fetch_tweets_form").serialize(),
+      })
+      .done(function(response){
+        $(".tweets").html(response);
+        $(".fetch_button").removeAttr('disabled');
+      });
+    })
+
+  })
+</script>
